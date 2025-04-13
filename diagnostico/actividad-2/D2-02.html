@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const factura = {
+        encabezado: {
+            tipo: "A",
+            Nrocomp: "1-75",
+            FechadeEmision: "23/02/2016",
+        },
+        Emisor: {
+            razonSocial: "Empresa SA",
+            IngBrutos: "30-22222222-9",
+            InicioActividades: "01/01/2010",
+            cuit: "20-28717013-1",
+            respinsabilidadAnteIVA: "Responsable Inscripto"
+        },
+        Cliente: {
+            razonSocial: "Sol SRL",
+            cuit: "30-11111111-8",
+            respinsabilidadAnteIVA: "Responsable Inscripto",
+            condicionVenta: "Contado"
+        },
+        detalleProductos: [
+        {
+            codigo: "5896",
+            descripcion: "LATEX INTERIOR BLANCO X20L",
+            cantidad: 2.00,
+            precioUnitario: 515.36,
+            bonificacion: 0.00,
+            alicuotaIVA: "21.00%",
+            total: 1247.17
+        },
+        {
+        codigo: "5896",
+            descripcion: "PINCEL N°20",
+            cantidad: 5.00,
+            precioUnitario: 82.36,
+            bonificacion: 0.00,
+            alicuotaIVA: "21.00%",
+            total: 498.28
+        }
+      ],
+        totales: {
+            importeNetoGravado: 1442.52,
+            iva21: 302.93,
+            subtotal: 1745.45,
+            importeTotal: 1745.45
+        },
+        importeEnLetras: "un mil setecientos cuarenta y cinco con 45"
+        }
+</script>
+</html>
