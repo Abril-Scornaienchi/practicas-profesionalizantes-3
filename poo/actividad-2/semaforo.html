@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semáforo</title>
+    <style>
+        .semaforo {
+            background-color: black;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80px;
+        }
+
+        .luz {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 10px 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .rojo {
+            background-color: red;
+        }
+
+        .amarillo {
+            background-color: yellow;
+        }
+
+        .verde {
+            background-color: green;
+        }
+
+        .encendida {
+            opacity: 1;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .apagada {
+            opacity: 0.3;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="semaforo">
+        <div id="rojo" class="luz apagada"></div>
+        <div id="amarillo" class="luz apagada"></div>
+        <div id="verde" class="luz apagada"></div>
+    </div>
+    <button id="cambiar" style="display:none;">Cambiar Color</button> <script>
+        class SemaforoVisual {
+            constructor(rojoId, amarilloId, verdeId) {
+                this.rojoLuz = document.getElementById(rojoId);
+                this.amarilloLuz = document.getElementById(amarilloId);
+                this.verdeLuz = document.getElementById(verdeId);
+                this.colores = ["rojo", "amarillo", "verde"];
+                this.indiceColorActual = 0;
+                this.apagarLuces();
+                this.actualizarVisualizacion();
+                this.intervaloId = null; // Para almacenar el ID del intervalo
+                this.iniciarCambioAutomatico(); // Iniciar el cambio automático al crear el objeto
+            }
+
+            cambiarColor() {
+                this.apagarLuces();
+                this.indiceColorActual = (this.indiceColorActual + 1) % this.colores.length;
+                this.actualizarVisualizacion();
+            }
+
+            apagarLuces() {
+                this.rojoLuz.classList.remove("encendida");
+                this.amarilloLuz.classList.remove("encendida");
+                this.verdeLuz.classList.remove("encendida");
+                this.rojoLuz.classList.add("apagada");
+                this.amarilloLuz.classList.add("apagada");
+                this.verdeLuz.classList.add("apagada");
+            }
+
+            actualizarVisualizacion() {
+                const colorActual = this.colores[this.indiceColorActual];
+                console.log("Color actual:", colorActual);
+                switch (colorActual) {
+                    case "rojo":
+                        this.rojoLuz.className = "luz rojo encendida";
+                        break;
+                    case "amarillo":
+                        this.amarilloLuz.className = "luz amarillo encendida";
+                        break;
+                    case "verde":
+                        this.verdeLuz.className = "luz verde encendida";
+                        break;
+                    default:
+                        console.error("Color no válido:", colorActual);
+                }
+            }
+
+            iniciarCambioAutomatico() {
+                this.intervaloId = setInterval(() => {
+                    this.cambiarColor();
+                }, 3000); // Cambia cada (3 segundos)
+            }
+
+        }
+
+        const miSemaforo = new SemaforoVisual("rojo", "amarillo", "verde");
+        const botonCambiar = document.getElementById("cambiar");
+
+    </script>
+</body>
+</html>
+
