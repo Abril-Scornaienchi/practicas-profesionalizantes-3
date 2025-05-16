@@ -1,0 +1,21 @@
+Proceso de abstracción: Reconocer lo indispensable de lo prescindible
+
+Objeto: Auto
+
+Propiedades/Atributos:
+
+Nombre           |   Tipo de dato   |ctante/variable |  rango     
+Velocidad            int               variable         0..260
+Estado               bool              variable         true, false
+Cantidad Ruedas      entero            constante        4  
+% de combustible     double            variable         0...100           
+
+
+Comportamiento
+Nombre			    | Parámetros/Tipo		 | Retorno/Tipo
+Encender                                        void
+Apagar                                          void
+Acelerar              incremento: int           void
+Frenar                intensidad: int           void
+CambiarDireccion      direccion: string         void                  
+
