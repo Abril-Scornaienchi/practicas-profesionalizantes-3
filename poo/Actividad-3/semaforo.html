@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semáforo con Círculo</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .semaforo {
+            background-color: #333;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+            margin-bottom: 30px;
+        }
+
+        .luz {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 10px 0;
+            transition: opacity 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .rojo {
+            background-color: #ff0000;
+        }
+
+        .amarillo {
+            background-color: #ffff00;
+        }
+
+        .verde {
+            background-color: #00ff00;
+        }
+
+        .encendida {
+            opacity: 1;
+        }
+
+        .apagada {
+            opacity: 0.2;
+        }
+
+        canvas {
+            background-color: #ffffff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: block;
+            max-width: 90%;
+            height: 250px; 
+            width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div class="semaforo">
+        <div id="rojo" class="luz rojo apagada"></div>
+        <div id="amarillo" class="luz amarillo apagada"></div>
+        <div id="verde" class="luz verde apagada"></div>
+    </div>
+
+    <canvas id="miCanvas"></canvas>
+
+    <script>
+        class SemaforoVisual {
+            constructor(rojoId, amarilloId, verdeId) {
+                this.rojoLuz = document.getElementById(rojoId);
+                this.amarilloLuz = document.getElementById(amarilloId);
+                this.verdeLuz = document.getElementById(verdeId);
+                this.colores = ["rojo", "amarillo", "verde"];
+                this.indiceColorActual = 0;
+                this.apagarLuces();
+                this.actualizarVisualizacion();
+                this.intervaloId = null;
+                this.currentColor = this.colores[this.indiceColorActual];
+            }
+
+            cambiarColor() {
+                this.apagarLuces();
+                this.indiceColorActual = (this.indiceColorActual + 1) % this.colores.length;
+                this.actualizarVisualizacion();
+            }
+
+            // Apaga luces
+            apagarLuces() {
+                this.rojoLuz.classList.remove("encendida");
+                this.amarilloLuz.classList.remove("encendida");
+                this.verdeLuz.classList.remove("encendida");
+                this.rojoLuz.classList.add("apagada");
+                this.amarilloLuz.classList.add("apagada");
+                this.verdeLuz.classList.add("apagada");
+            }
+
+            actualizarVisualizacion() {
+                const colorActual = this.colores[this.indiceColorActual];
+                this.currentColor = colorActual; 
+                console.log("Color actual del semáforo:", colorActual);
+
+                let tiempoDuracion = 0;
+
+                switch (colorActual) {
+                    case "rojo":
+                        this.rojoLuz.className = "luz rojo encendida";
+                        tiempoDuracion = 5000; 
+                        break;
+                    case "amarillo":
+                        this.amarilloLuz.className = "luz amarillo encendida";
+                        tiempoDuracion = 1500; 
+                        break;
+                    case "verde":
+                        this.verdeLuz.className = "luz verde encendida";
+                        tiempoDuracion = 4000; 
+                        break;
+                    default:
+                        console.error("Color no válido:", colorActual);
+                }
+                this.reiniciarIntervalo(tiempoDuracion);
+            }
+
+            reiniciarIntervalo(tiempo) {
+                clearInterval(this.intervaloId); 
+                this.intervaloId = setInterval(() => {
+                    this.cambiarColor();
+                }, tiempo);
+            }
+        }
+
+        const canvas = document.getElementById('miCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let circuloX = 50;
+        const circuloRadius = 20; 
+        const circuloColor = '#FF69B4';
+        let circuloSpeed = 3;
+
+        const miSemaforo = new SemaforoVisual("rojo", "amarillo", "verde");
+
+        function drawCirculo() {
+            ctx.beginPath();
+            ctx.arc(circuloX, canvas.height / 2, circuloRadius, 0, Math.PI * 2);
+            ctx.fillStyle = circuloColor; 
+            ctx.fill();
+            ctx.closePath(); 
+        }
+
+        function updateCirculo() {
+            // círculo se mueve si luz del semáforo es verde
+            if (miSemaforo.currentColor === 'verde') {
+                circuloX += circuloSpeed; // Mueve el círculo a derecha
+
+                if (circuloX > canvas.width + circuloRadius) {
+                    circuloX = -circuloRadius; // aparece por la izquierda
+                }
+            }
+        }
+
+        function animate() {
+            // Ajusta tamaño canvas
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); //limpia canvas
+
+            updateCirculo();
+            drawCirculo();
+
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = function () {
+            animate();
+        };
+    </script>
+</body>
+</html>
