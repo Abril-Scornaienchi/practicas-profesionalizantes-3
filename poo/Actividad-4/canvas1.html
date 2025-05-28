@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas Rectángulo</title>
+    <style>
+        body {
+            width: 50%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        canvas {
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+<body>
+<script>
+
+    class Rectangle {
+        constructor(ctx, x, y, width, height, color = 'blue') {
+            this.ctx = ctx;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.angle = 0;
+            this.color = color;
+            this.speed = 5;
+            this.rotationSpeed = 0.1;
+        }
+
+        draw() {
+            this.ctx.save();
+            this.ctx.translate(this.x, this.y);
+            this.ctx.rotate(this.angle);
+            this.ctx.fillStyle = this.color;
+            this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+            this.ctx.restore();
+        }
+
+        rotate(direction) {
+            this.angle = this.angle + this.rotationSpeed * direction;
+        }
+
+        move(direction) {
+            const dx = Math.cos(this.angle) * this.speed * direction;
+            const dy = Math.sin(this.angle) * this.speed * direction;
+
+            this.x += dx;
+            this.y += dy;
+        }
+    }
+
+    class RectangleController {
+        constructor(rectangle, canvas) {
+            this.rectangle = rectangle;
+            this.canvas = canvas;
+            this.keysPressed = {}; 
+            this.setupEventListeners();
+            this.animationFrameId = null;
+        }
+
+        setupEventListeners() {
+            document.addEventListener('keydown', (event) => {
+                this.keysPressed[event.key] = true;
+                this.updateRectangle();
+            });
+
+            document.addEventListener('keyup', (event) => {
+                this.keysPressed[event.key] = false;
+                this.updateRectangle();
+            });
+        }
+
+        updateRectangle() {
+            this.rectangle.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            if (this.keysPressed['ArrowUp']) {
+                this.rectangle.move(1); 
+            }
+            if (this.keysPressed['ArrowDown']) {
+                this.rectangle.move(-1);
+            }
+            if (this.keysPressed['ArrowLeft']) {
+                this.rectangle.rotate(-1);
+            }
+            if (this.keysPressed['ArrowRight']) {
+                this.rectangle.rotate(1);
+            }
+
+            this.rectangle.draw();
+        }
+    }
+
+    function main() {
+        let canvas = document.createElement('canvas');
+        canvas.width = 600;
+        canvas.height = 400;
+        document.body.appendChild(canvas);
+
+        let ctx = canvas.getContext('2d');
+
+        const initialX = canvas.width / 2;
+        const initialY = canvas.height / 2;
+        const rectWidth = 100;
+        const rectHeight = 50;
+        const car = new Rectangle(ctx, initialX, initialY, rectWidth, rectHeight);
+
+        car.draw();
+
+        const controller = new RectangleController(car, canvas);
+    }
+
+    window.onload = main;
+
+</script>
+</body>
+</html>
