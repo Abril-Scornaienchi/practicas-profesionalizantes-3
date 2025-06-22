@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Objetos III</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0f4f8;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .top-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 12px;
+        }
+
+        .control-button {
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: #50cd1a;
+            color: white;
+        }
+
+        .control-button {
+            margin-bottom: 8px;
+        }
+        
+        .canvas-and-table {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        canvas {
+            background-color: #bfbfbf;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            height: 400px; 
+        }
+
+        .figures-table-container {
+            flex-grow: 1;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .figures-table {
+            width: 100%;
+        }
+
+        .figures-table th, .figures-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .figures-table tr.selected {
+            background-color: #bfdbfe;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .top-section {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: center;
+            }
+            .canvas-and-table {
+                flex-direction: row;
+            }
+            .controls-panel {
+                min-width: 200px;
+            }
+            canvas {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1>Figuras</h1> 
+
+        <div class="top-section">
+            <div class="controls-panel">
+                <h2>Crear Figuras</h2> 
+                <button id="createRectangleBtn" class="control-button">Crear Rectángulo</button> 
+                <button id="createCircleBtn" class="control-button">Crear Círculo</button> 
+                <button id="createTriangleBtn" class="control-button">Crear Triángulo</button> 
+                <label for="colorPicker">Color de Figura:</label> 
+                <input type="color" id="colorPicker" value="#4f46e5" class="color-input">
+            </div>
+
+            <div class="canvas-and-table">
+                <canvas id="mainCanvas"></canvas>
+                <div class="figures-table-container">
+                    <h2>Figuras Creadas</h2> 
+                    <table class="figures-table" id="figuresTable">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>ID/Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="figuresTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="active-figure-indicator">
+            Figura activa seleccionada actual: <span id="activeFigureName">Ninguna</span> 
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
